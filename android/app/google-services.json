@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "328675246363",
+    "project_id": "laserpigeondeterrent",
+    "storage_bucket": "laserpigeondeterrent.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:328675246363:android:37838ab93ab01bafbcd3be",
+        "android_client_info": {
+          "package_name": "com.example.lpd"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "328675246363-20r691ri0v0g3d7oil403f12okvmphnh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyATWhIP29tBaaHoz3uDduwkast91BUgjhI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "328675246363-20r691ri0v0g3d7oil403f12okvmphnh.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "328675246363-h2kmj86hampcd2t49090s09j59q69hg1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.lpd"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:328675246363:android:7708456d7b3b66e8bcd3be",
+        "android_client_info": {
+          "package_name": "com.project.lpd"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "328675246363-20r691ri0v0g3d7oil403f12okvmphnh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyATWhIP29tBaaHoz3uDduwkast91BUgjhI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "328675246363-20r691ri0v0g3d7oil403f12okvmphnh.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "328675246363-h2kmj86hampcd2t49090s09j59q69hg1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.lpd"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
