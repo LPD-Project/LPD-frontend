@@ -10,7 +10,7 @@ class EndDrawer extends StatelessWidget {
   const EndDrawer({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    String url = 'http://192.168.1.44:3000';
+    String url = 'https://plankton-app-xmeox.ondigitalocean.app';
     double screenHeight = (MediaQuery.of(context).size.height);
     return Drawer(
       child: ListView(

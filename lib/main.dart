@@ -22,6 +22,7 @@ import './pages/register.dart';
 import './pages/login.dart';
 
 // flutter run -d chrome --web-port 5000 --web-hostname 0.0.0.0 --release
+//flutter run -d web-server --web-port 5000 --web-hostname 0.0.0.0
 
 // Define Redux state
 class AppState {
@@ -182,7 +183,8 @@ class MyApp extends StatelessWidget {
             ),
           ),
           home: LoginPage(
-            url: "http://192.168.1.44:3000",
+            url: "https://plankton-app-xmeox.ondigitalocean.app",
+            // url: "http://lpd-backend.adaptable.app/",
           ),
           // home: DeviceAddInfo(deviceSerialCode: "qwerasdfzxcv"),
         ));

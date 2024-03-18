@@ -8,7 +8,8 @@ import 'dart:convert';
 typedef void StreamStateCallback(MediaStream stream);
 
 class Signaling {
-  final socket = new SocketManager('http://192.168.1.44:3000');
+  final socket =
+      new SocketManager('https://plankton-app-xmeox.ondigitalocean.app');
   RTCPeerConnection? peerConnection;
   MediaStream? localStream;
   MediaStream? remoteStream;
@@ -16,6 +17,9 @@ class Signaling {
   String? currentRoomText;
   StreamStateCallback? onAddRemoteStream;
   RTCDataChannel? dataChannel;
+  bool _isPeerConnectionInitialized = false;
+  bool _isSocketConnected = false;
+  bool _isSdpOfferReceived = false;
 
   // Map<String, dynamic> configuration = {
   //   'iceServers': [
@@ -106,58 +110,69 @@ class Signaling {
   }
 
   Future<void> joinCommunicationRoom(device_serial_code, userid) async {
-    // init signaling server connection
     try {
-      // inti peer connection
-      // peerConnection = null;
-      peerConnection = await createPeerConnection(configuration);
+      // Initialize peer connection if not already initialized
+      if (!_isPeerConnectionInitialized) {
+        peerConnection = await createPeerConnection(configuration);
+        registerPeerConnectionListeners();
+        _isPeerConnectionInitialized = true;
+      }
 
-      registerPeerConnectionListeners();
-      socket.connectToServer();
-      socket.connectToServerTypeUser(userid);
+      // Connect to the server if not already connected
+      if (!_isSocketConnected) {
+        socket.connectToServer();
+        socket.connectToServerTypeUser(userid);
+        _isSocketConnected = true;
+      }
 
-      //receive sdpOffer of the pre-connected devices
-      socket.setSdpOfferMessageCallback((message) async {
-        RTCSessionDescription description =
-            new RTCSessionDescription(message['sdp']['sdp'], 'offer');
-        await peerConnection!.setRemoteDescription(description);
+      // Set up callback for receiving SDP offer if not already set
+      if (!_isSdpOfferReceived) {
+        socket.setSdpOfferMessageCallback((message) async {
+          _isSdpOfferReceived = true;
 
-        RTCSessionDescription answer = await peerConnection!.createAnswer();
+          var sdpString = message['sdp']['sdp'];
+          if (sdpString == null) {
+            return;
+          }
+          RTCSessionDescription description =
+              await RTCSessionDescription(sdpString, 'offer');
+          try {
+            await peerConnection!.setRemoteDescription(description);
 
-        peerConnection!.setLocalDescription(answer);
+            RTCSessionDescription answer = await peerConnection!.createAnswer();
+            peerConnection!.setLocalDescription(answer);
 
-        Map<String, dynamic> sdpData = {
-          'sdp': answer.sdp.toString(),
-          'type': answer.type.toString()
-        };
+            Map<String, dynamic> sdpData = {
+              'sdp': answer.sdp.toString(),
+              'type': answer.type.toString()
+            };
 
-        socket.sendAnswer(sdpData, userid, device_serial_code);
+            socket.sendAnswer(sdpData, userid, device_serial_code);
 
-        socket.setIceCandidateMessageCallback((IceMessage) async {
-          Map<String, dynamic> iceMap = IceMessage['message'];
-
-          RTCIceCandidate rtcIceCandidate = RTCIceCandidate(
-              iceMap['candidate'], iceMap['sdpMid'], iceMap['sdpMLineIndex']);
-
-          await peerConnection!.addCandidate(rtcIceCandidate);
+            socket.setIceCandidateMessageCallback((IceMessage) async {
+              Map<String, dynamic> iceMap = IceMessage['message'];
+              RTCIceCandidate rtcIceCandidate = RTCIceCandidate(
+                  iceMap['candidate'],
+                  iceMap['sdpMid'],
+                  iceMap['sdpMLineIndex']);
+              await peerConnection!.addCandidate(rtcIceCandidate);
+            });
+          } catch (e) {
+            return;
+          }
         });
-      });
-
-      // Timer.periodic(Duration(milliseconds: 1500), (timer) async {
-      //   List<StatsReport> stats = await peerConnection!.getStats();
-      //   StatsReport? videoReport;
-      //   for (var report in stats) {
-      //     if (report.type == "video") {
-      //       videoReport = report;
-      //       print(videoReport);
-      //     }
-      //   }
-      // });
+      }
     } catch (e) {
-      // this.hangUp(userid, device_serial_code);
-      // this.joinCommunicationRoom(device_serial_code, userid);
-      print("i failed working on joining room");
+      print("Failed to join communication room: $e");
+      await retryJoinCommunicationRoom(device_serial_code, userid);
     }
+  }
+
+  Future<void> retryJoinCommunicationRoom(device_serial_code, userid) async {
+    await Future.delayed(
+        Duration(seconds: 5)); // Wait for 5 seconds before retrying
+    await joinCommunicationRoom(
+        device_serial_code, userid); // Retry joining the room
   }
 
   sendCameraControl(user_id, device_serial_code, camera_state) {
@@ -174,6 +189,7 @@ class Signaling {
 
   hangUp(uid, device_serial_code) {
     peerConnection!.close();
+    peerConnection = null;
     socket!.sendUserDisconnection(uid, device_serial_code);
     socket!.disconnectFromServer();
   }

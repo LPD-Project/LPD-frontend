@@ -112,7 +112,7 @@ class _DeviceAddInfo extends State<DeviceAddInfo> {
     );
 
     if (result != null) {
-      if (result.files.first.size! <= 100 * 1024) {
+      if (result.files.first.size! <= 20 * 1024) {
         Uint8List? bytes = result.files.first.bytes;
         return bytes;
       } else {
@@ -221,6 +221,9 @@ class _DeviceAddInfo extends State<DeviceAddInfo> {
                     color: const Color.fromARGB(217, 255, 255, 255)),
                 child: Column(
                   children: [
+                    SizedBox(
+                      height: 15,
+                    ),
                     Row(
                       children: [
                         MouseRegion(
@@ -402,7 +405,7 @@ class _DeviceAddInfo extends State<DeviceAddInfo> {
                       height: 20,
                     ),
                     Container(
-                      margin: EdgeInsets.only(left: 10, right: 240),
+                      margin: EdgeInsets.only(left: 10, right: 10),
                       child: const Text(
                         "please name this device : ",
                         style: TextStyle(fontWeight: FontWeight.w500),
@@ -440,52 +443,105 @@ class _DeviceAddInfo extends State<DeviceAddInfo> {
                         color: Color.fromARGB(255, 197, 197, 197),
                         borderRadius: BorderRadius.circular(7),
                       ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Container(
-                            width: 500 / 1080 * screenWidth >= 400
-                                ? 400
-                                : 500 / 1080 * screenWidth,
-                            height: 250 / 1080 * screenWidth >= 200
-                                ? 200
-                                : 250 / 1080 * screenWidth,
-                            margin: EdgeInsets.only(left: 15, right: 15),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15),
-                                color: Color.fromARGB(255, 50, 50, 50)),
-                            child: _imageBytes.isEmpty
-                                ? SvgPicture.asset('assets/icons/account.svg')
-                                : ClipRRect(
-                                    child: Image.memory(_imageBytes),
-                                  ),
-                          ),
-                          Container(
-                            width: 3,
-                            height: 200,
-                            margin: EdgeInsets.only(top: 15, bottom: 15),
-                            color: const Color.fromARGB(255, 125, 125, 125),
-                          ),
-                          Container(
-                              width: screenWidth >= 620 ? 175 : 115,
-                              height: 35,
-                              child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(15)),
-                                    backgroundColor:
-                                        const Color.fromARGB(255, 91, 107, 188),
-                                  ),
-                                  onPressed: () {
-                                    myAlert();
-                                  },
-                                  child: const Text(
-                                    "Upload image",
-                                    textAlign: TextAlign.center,
-                                  )))
-                        ],
-                      ),
+                      child: screenWidth > 480
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Container(
+                                  width: 500 / 1080 * screenWidth >= 400
+                                      ? 400
+                                      : 500 / 1080 * screenWidth,
+                                  height: 250 / 1080 * screenWidth >= 200
+                                      ? 200
+                                      : 250 / 1080 * screenWidth,
+                                  margin: EdgeInsets.only(left: 15, right: 15),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(15),
+                                      color: Color.fromARGB(255, 50, 50, 50)),
+                                  child: _imageBytes.isEmpty
+                                      ? SvgPicture.asset(
+                                          'assets/icons/account.svg')
+                                      : ClipRRect(
+                                          child: Image.memory(_imageBytes),
+                                        ),
+                                ),
+                                Container(
+                                  width: 3,
+                                  height: 200,
+                                  margin: EdgeInsets.only(top: 15, bottom: 15),
+                                  color:
+                                      const Color.fromARGB(255, 125, 125, 125),
+                                ),
+                                Container(
+                                    width: screenWidth >= 620 ? 175 : 115,
+                                    height: 35,
+                                    child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(15)),
+                                          backgroundColor: const Color.fromARGB(
+                                              255, 91, 107, 188),
+                                        ),
+                                        onPressed: () {
+                                          myAlert();
+                                        },
+                                        child: const Text(
+                                          "Upload image",
+                                          textAlign: TextAlign.center,
+                                        )))
+                              ],
+                            )
+                          : Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Container(
+                                  width: 500 / 1080 * screenWidth >= 400
+                                      ? 400
+                                      : 500 / 1080 * screenWidth,
+                                  height: 250 / 1080 * screenWidth >= 200
+                                      ? 200
+                                      : 250 / 1080 * screenWidth,
+                                  margin: EdgeInsets.only(top: 15, bottom: 15),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(15),
+                                      color: Color.fromARGB(255, 50, 50, 50)),
+                                  child: _imageBytes.isEmpty
+                                      ? SvgPicture.asset(
+                                          'assets/icons/account.svg')
+                                      : ClipRRect(
+                                          child: Image.memory(_imageBytes),
+                                        ),
+                                ),
+                                Container(
+                                  width: 200,
+                                  height: 3,
+                                  margin: EdgeInsets.only(
+                                      bottom: 15, left: 15, right: 15),
+                                  color:
+                                      const Color.fromARGB(255, 125, 125, 125),
+                                ),
+                                Container(
+                                    width: screenWidth >= 620 ? 175 : 115,
+                                    height: 35,
+                                    margin: EdgeInsets.only(bottom: 15),
+                                    child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(15)),
+                                          backgroundColor: const Color.fromARGB(
+                                              255, 91, 107, 188),
+                                        ),
+                                        onPressed: () {
+                                          myAlert();
+                                        },
+                                        child: const Text(
+                                          "Upload image",
+                                          textAlign: TextAlign.center,
+                                        )))
+                              ],
+                            ),
                     ),
                     const SizedBox(
                       height: 20,
