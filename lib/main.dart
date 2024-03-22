@@ -183,7 +183,8 @@ class MyApp extends StatelessWidget {
             ),
           ),
           home: LoginPage(
-            url: "https://plankton-app-xmeox.ondigitalocean.app",
+            url: "http://192.168.1.44:3000",
+            // url: "https://plankton-app-xmeox.ondigitalocean.app",
             // url: "http://lpd-backend.adaptable.app/",
           ),
           // home: DeviceAddInfo(deviceSerialCode: "qwerasdfzxcv"),

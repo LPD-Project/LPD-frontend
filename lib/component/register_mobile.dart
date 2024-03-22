@@ -101,7 +101,7 @@ class _RegisterMobile extends State<RegisterMobile> {
     );
 
     if (result != null) {
-      if (result.files.first.size! <= 100 * 1024) {
+      if (result.files.first.size! <= 20 * 1024) {
         Uint8List? bytes = result.files.first.bytes;
         return bytes;
       } else {

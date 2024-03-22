@@ -8,8 +8,9 @@ import 'dart:convert';
 typedef void StreamStateCallback(MediaStream stream);
 
 class Signaling {
-  final socket =
-      new SocketManager('https://plankton-app-xmeox.ondigitalocean.app');
+  final socket = new SocketManager('http://192.168.1.44:3000');
+  // new SocketManager('https://plankton-app-xmeox.ondigitalocean.app');
+
   RTCPeerConnection? peerConnection;
   MediaStream? localStream;
   MediaStream? remoteStream;
@@ -35,7 +36,6 @@ class Signaling {
   Map<String, dynamic> configuration = {
     'iceServers': [
       {'urls': 'stun:stun1.l.google.com:19302'},
-      {'urls': 'stun:stun2.l.google.com:19302'},
       {
         'urls': 'turn:146.190.100.131:4443?transport=tcp',
         'username': 'lpdTurnServerUser',
